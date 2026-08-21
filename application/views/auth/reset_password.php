@@ -1,0 +1,1 @@
+<div class="auth-card"><p class="eyebrow">ACCOUNT RECOVERY</p><h1>Choose a new password</h1><?=validation_errors('<p class="alert error">','</p>')?><?=form_open()?><label>New password<input type="password" name="password" minlength="12" required></label><button class="button">Reset password</button><?=form_close()?></div>
