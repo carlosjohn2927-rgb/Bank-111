@@ -7,3 +7,10 @@ CREATE TABLE loans (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id BIGINT
 CREATE TABLE cards (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id BIGINT UNSIGNED NOT NULL,card_type ENUM('virtual','physical') NOT NULL,last_four CHAR(4),status ENUM('pending','active','blocked','rejected') NOT NULL DEFAULT 'pending',created_at DATETIME NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE) ENGINE=InnoDB;
 -- Create a manager with a fresh hash generated for your chosen password:
 -- INSERT INTO users (role,first_name,last_name,email,password_hash,status,created_at) VALUES ('manager','System','Manager','manager@example.com','$2y$...', 'active', NOW());
+
+-- Operational indexes
+CREATE INDEX idx_users_role_status ON users(role,status);
+CREATE INDEX idx_transactions_account_status ON transactions(account_id,status,created_at);
+CREATE INDEX idx_kyc_status ON kyc_applications(status,created_at);
+CREATE INDEX idx_loans_status ON loans(status,created_at);
+CREATE INDEX idx_cards_status ON cards(status,created_at);
