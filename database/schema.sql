@@ -14,3 +14,5 @@ CREATE INDEX idx_transactions_account_status ON transactions(account_id,status,c
 CREATE INDEX idx_kyc_status ON kyc_applications(status,created_at);
 CREATE INDEX idx_loans_status ON loans(status,created_at);
 CREATE INDEX idx_cards_status ON cards(status,created_at);
+
+CREATE TABLE audit_logs (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, manager_id BIGINT UNSIGNED NOT NULL, action VARCHAR(80) NOT NULL, resource_type VARCHAR(40) NOT NULL, resource_id BIGINT UNSIGNED NOT NULL, metadata JSON NULL, created_at DATETIME NOT NULL, INDEX idx_audit_manager_created (manager_id,created_at), FOREIGN KEY(manager_id) REFERENCES users(id) ON DELETE CASCADE) ENGINE=InnoDB;
