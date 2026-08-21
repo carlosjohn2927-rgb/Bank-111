@@ -16,3 +16,5 @@ CREATE INDEX idx_loans_status ON loans(status,created_at);
 CREATE INDEX idx_cards_status ON cards(status,created_at);
 
 CREATE TABLE audit_logs (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, manager_id BIGINT UNSIGNED NOT NULL, action VARCHAR(80) NOT NULL, resource_type VARCHAR(40) NOT NULL, resource_id BIGINT UNSIGNED NOT NULL, metadata JSON NULL, created_at DATETIME NOT NULL, INDEX idx_audit_manager_created (manager_id,created_at), FOREIGN KEY(manager_id) REFERENCES users(id) ON DELETE CASCADE) ENGINE=InnoDB;
+
+CREATE TABLE password_resets (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, user_id BIGINT UNSIGNED NOT NULL, token_hash CHAR(64) NOT NULL UNIQUE, expires_at DATETIME NOT NULL, used_at DATETIME NULL, created_at DATETIME NOT NULL, INDEX idx_reset_lookup (token_hash,expires_at), FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE) ENGINE=InnoDB;
