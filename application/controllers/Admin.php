@@ -1,0 +1,15 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+class Admin extends MY_Controller {
+ private function admin_view($content,$data=array()){ $this->require_login('manager');$this->view($content,$data,'admin'); }
+ public function login(){if($this->input->method()==='post'){$user=$this->User_model->find_by_email($this->input->post('email',TRUE));if($user && $user['role']==='manager' && password_verify($this->input->post('password'),$user['password_hash'])){$this->session->regenerate_id(TRUE);$this->session->set_userdata('user',array('id'=>$user['id'],'name'=>$user['first_name'].' '.$user['last_name'],'role'=>'manager'));redirect('admin');}$data['error']='Invalid manager credentials.';}$this->view('auth/admin_login',isset($data)?$data:array(),'auth');}
+ public function logout(){$this->session->sess_destroy();redirect('admin/login');}
+ public function index(){$this->admin_view('admin/dashboard',array('title'=>'Dashboard','customers'=>$this->User_model->count_role('customer'),'pending_kyc'=>$this->Account_model->admin_count('kyc_applications','pending'),'pending_loans'=>$this->Account_model->admin_count('loans','pending'),'pending_cards'=>$this->Account_model->admin_count('cards','pending')));}
+ public function users(){$this->admin_view('admin/users',array('title'=>'Manage users','users'=>$this->User_model->all_customers()));}
+ public function create_user(){if($this->input->method()==='post'){$this->User_model->create(array('role'=>'customer','first_name'=>$this->input->post('first_name',TRUE),'last_name'=>$this->input->post('last_name',TRUE),'email'=>$this->input->post('email',TRUE),'password'=>$this->input->post('password'),'phone'=>$this->input->post('phone',TRUE),'country'=>$this->input->post('country',TRUE),'status'=>'active'));$this->session->set_flashdata('success','Customer created.');redirect('admin/users');}$this->admin_view('admin/create_user',array('title'=>'Create a new user'));}
+ public function kyc(){$this->admin_view('admin/table',array('title'=>'Grand Chase KYC application list','rows'=>$this->Account_model->list_with_user('kyc_applications'),'type'=>'kyc'));}
+ public function deposits(){$this->admin_view('admin/table',array('title'=>'Manage clients deposits','rows'=>array(),'type'=>'deposits'));}
+ public function loans(){$this->admin_view('admin/table',array('title'=>'Requested loans','rows'=>$this->Account_model->list_with_user('loans'),'type'=>'loans'));}
+ public function cards(){$this->admin_view('admin/table',array('title'=>'Manage virtual cards','rows'=>$this->Account_model->list_with_user('cards'),'type'=>'cards'));}
+ public function card_applications(){$this->admin_view('admin/table',array('title'=>'Pending card applications','rows'=>$this->Account_model->list_with_user('cards'),'type'=>'card-applications'));}
+ public function managers(){$this->admin_view('admin/managers',array('title'=>'Managers list','managers'=>$this->db->select('first_name,last_name,email,status,created_at')->get_where('users',array('role'=>'manager'))->result_array()));}
+}

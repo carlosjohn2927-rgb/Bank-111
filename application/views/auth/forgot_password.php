@@ -1,0 +1,1 @@
+<div class="auth-card"><p class="eyebrow">ACCOUNT RECOVERY</p><h1>Reset your password</h1><p>Enter your email and we will send password-reset instructions.</p><label>Email address<input type="email"></label><button class="button">Send reset link</button></div>
