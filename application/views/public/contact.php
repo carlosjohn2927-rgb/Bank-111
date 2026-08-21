@@ -1,0 +1,1 @@
+<section class="center"><p class="eyebrow">SUPPORT</p><h2>How can we help?</h2><p class="lead" style="margin:auto">Our digital support team is available whenever you need us.</p><a class="button" href="mailto:support@grandchase.example">Contact support</a></section>

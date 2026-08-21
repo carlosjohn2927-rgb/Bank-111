@@ -1,0 +1,1 @@
+<section class="center"><p class="eyebrow">ABOUT GRAND CHASE</p><h2>We revolutionized digital banking.</h2><p class="lead" style="margin:auto">We use thoughtful technology to make international banking more transparent, secure, and human.</p></section>
